@@ -1,7 +1,12 @@
 #include "mainwindow.h"
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
 
 MainWindow::MainWindow(QRect screen)
 {
+    srand (time(NULL));
+
     this->height = screen.height();
     this->width = screen.width();
     this->processNumber = 0;
@@ -88,7 +93,12 @@ void MainWindow::iniciar()
          else{
              this->processNumber=cont.toInt();
              this->table->setRowCount(this->processNumber);
-             /** GENERAR PROCESOS ALEATORIOS Y GUARDARLOS EN UNA ESTRUCTURA DE DATOS **/
+             for(int i=1;i<=(this->processNumber);i++){
+                 table->setItem((i-1), 0, new QTableWidgetItem("P"+QString::number(i)));
+                 table->setItem((i-1), 1, new QTableWidgetItem(QString::number(rand() % int(ceil((this->processNumber*2.0)/3.0)+1))));
+                 table->setItem((i-1), 2, new QTableWidgetItem(QString::number((rand() % 10) +1)));
+                 /**  GUARDAR DATOS EN UNA ESTRUCTURA (cola de prioridad) **/
+             }
          }
     }
     else{
