@@ -8,9 +8,9 @@ int main(int argc, char *argv[])
 
     QRect rec = QApplication::desktop()->screenGeometry();
 
-    MainWindow nuevo(rec);
+    MainWindow * nuevo=new MainWindow(rec);
 
-    nuevo.show();
+    nuevo->show();
 
     return a.exec();
 }
