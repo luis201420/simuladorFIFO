@@ -1,4 +1,6 @@
 #include "mainwindow.h"
+#include "myutilities.h"
+
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
@@ -70,13 +72,6 @@ MainWindow::MainWindow(QRect screen)
     /** GRAFICA **/
 }
 
-bool isNumber(QString a){
-    for(int i=0;i<a.size();i++){
-        if(a[i]<'0' || a[i]>'9')return false;
-    }
-    return true;
-}
-
 void MainWindow::iniciar()
 {
     QString cont=(this->text)->toPlainText();
@@ -86,23 +81,42 @@ void MainWindow::iniciar()
         msgBox.exec();
     }
     else if(isNumber(cont)){
-         if(cont.toInt()>100){
+         if(cont.toInt()>100 || cont.toInt()==0){
              msgBox.setText("Asegurese de haber puesto un valor entre [1-100].");
              msgBox.exec();
          }
          else{
              this->processNumber=cont.toInt();
-             this->table->setRowCount(this->processNumber);
-             for(int i=1;i<=(this->processNumber);i++){
-                 table->setItem((i-1), 0, new QTableWidgetItem("P"+QString::number(i)));
-                 table->setItem((i-1), 1, new QTableWidgetItem(QString::number(rand() % int(ceil((this->processNumber*2.0)/3.0)+1))));
-                 table->setItem((i-1), 2, new QTableWidgetItem(QString::number((rand() % 10) +1)));
-                 /**  GUARDAR DATOS EN UNA ESTRUCTURA (cola de prioridad) **/
-             }
+             this->llenar();
+             this->procesar();
          }
     }
     else{
         msgBox.setText("El valor puesto es incorrecto.");
         msgBox.exec();
     }
+}
+
+void MainWindow::llenar()
+{
+    this->table->setRowCount(this->processNumber);
+    this->processes.clear();
+    for(int i=1;i<=(this->processNumber);i++){
+
+        QString id ="P"+QString::number(i);
+        int t1=rand() % int(ceil((this->processNumber*2.0)/3.0)+1);
+        int t2=(rand() % 10) +1;
+
+        table->setItem((i-1), 0, new QTableWidgetItem(id));
+        table->setItem((i-1), 1, new QTableWidgetItem(QString::number(t1)));
+        table->setItem((i-1), 2, new QTableWidgetItem(QString::number(t2)));
+
+        this->processes.push_back(make_pair(id,make_pair(t1,t2)));
+    }
+}
+
+void MainWindow::procesar()
+{
+    sort(this->processes.begin(),this->processes.end(),myorder);
+    /** VECTOR ORDENADO PARA PROCESAR SEGUN EL TIEMPO DE LLEGADA DE CADA PROCESO **/
 }

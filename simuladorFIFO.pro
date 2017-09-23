@@ -18,6 +18,7 @@ SOURCES += main.cpp \
 
 HEADERS  += \
     mainwindow.h \
-    startbutton.h
+    startbutton.h \
+    myutilities.h
 
 FORMS    +=
