@@ -4,6 +4,7 @@ MainWindow::MainWindow(QRect screen)
 {
     this->height = screen.height();
     this->width = screen.width();
+    this->processNumber = 0;
 
     this->height = (this->height)*(0.8);
     this->width = (this->width)*(0.75);
@@ -40,6 +41,29 @@ MainWindow::MainWindow(QRect screen)
     /**                    BUTTON                       **/
 
     this->button = new StartButton(this,((posTextX+textWidth)+70),((posTextY-5)));
+
+    /*******************************************************/
+    /**               MOSTRADOR DE DATOS                  **/
+
+    this->counter = new QWidget(this);
+    this->counter->setGeometry(posTextX,(posTextY+textHeight+30),(0.4*this->width),(0.35*this->height));
+    this->counter->setStyleSheet("background-color:#FFFFFF;");
+
+    /** TABLE **/
+    this->table= new QTableWidget(counter);
+    this->table->setRowCount(10);
+    this->table->setColumnCount(3);
+    this->table->resize(counter->width(),counter->height());
+    QStringList tableHeader;
+    tableHeader<<"ID Proceso"<<"Tiempo llegada"<<"Duracion";
+    this->table->setHorizontalHeaderLabels(tableHeader);
+    this->table->horizontalHeader()->setStretchLastSection(true);
+
+
+    /*********************************************************/
+
+    /** PANEL DE RESULTADOS **/
+    /** GRAFICA **/
 }
 
 bool isNumber(QString a){
@@ -58,9 +82,13 @@ void MainWindow::iniciar()
         msgBox.exec();
     }
     else if(isNumber(cont)){
-        int numero = cont.toInt();
-        qDebug()<<numero;
-        /**  CALCULAR  **/
+         if(cont.toInt()>100){
+             msgBox.setText("Asegurese de haber puesto un valor entre [1-100].");
+             msgBox.exec();
+         }
+         else{
+             this->processNumber=cont.toInt();
+         }
     }
     else{
         msgBox.setText("El valor puesto es incorrecto.");

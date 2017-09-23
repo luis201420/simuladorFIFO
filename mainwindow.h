@@ -6,6 +6,9 @@
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QMessageBox>
+#include <QTableWidget>
+#include <QHeaderView>
+
 #include "startbutton.h"
 
 class MainWindow:public QWidget
@@ -13,8 +16,11 @@ class MainWindow:public QWidget
 private:
     int height;
     int width;
+    int processNumber;
     QTextEdit * text;
     StartButton * button;
+    QWidget * counter;
+    QTableWidget * table;
 public:
     MainWindow(QRect screen);
 
