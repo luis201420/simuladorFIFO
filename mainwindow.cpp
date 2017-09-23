@@ -51,7 +51,6 @@ MainWindow::MainWindow(QRect screen)
 
     /** TABLE **/
     this->table= new QTableWidget(counter);
-    this->table->setRowCount(10);
     this->table->setColumnCount(3);
     this->table->resize(counter->width(),counter->height());
     QStringList tableHeader;
@@ -88,6 +87,8 @@ void MainWindow::iniciar()
          }
          else{
              this->processNumber=cont.toInt();
+             this->table->setRowCount(this->processNumber);
+             /** GENERAR PROCESOS ALEATORIOS Y GUARDARLOS EN UNA ESTRUCTURA DE DATOS **/
          }
     }
     else{
