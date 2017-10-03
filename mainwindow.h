@@ -26,9 +26,13 @@ private:
     int   processNumber ;
     QTextEdit    * text   ;
     StartButton  * button ;
+
     QWidget      * counter;
-    QTableWidget * table  ;
+    QWidget      * resultCounter;
+    QTableWidget * counterTable ;
+    QTableWidget * resultTable ;
     vector< pair<QString,pair<int,int>> > processes;
+    vector< pair<QString,pair<int,int>> > results  ;
 
 public:
     MainWindow(QRect screen);
@@ -41,6 +45,7 @@ public:
     void iniciar() ;
     void llenar()  ;
     void procesar();
+    void mostrar() ;
 };
 
 #endif // MAINWINDOW_H
