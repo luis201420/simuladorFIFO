@@ -211,7 +211,18 @@ void MainWindow::graficar()
         g=(rand() % 155) +100;
         b=(rand() % 155) +100;
 
+        if(i==0){
+            QLabel * time = new QLabel(this->grafic);
+            time->setGeometry((x-7),(this->grafic->height()/2)+2,15,10);
+            time->setStyleSheet("background-color:#FFFFFF");
+            time->setText(QString::number(this->processes[i].second.first));
+            time->setAlignment(Qt::AlignCenter);
+            time->show();
+            this->times.push_back(time);
+        }
+
         tam = this->processes[i].second.second;
+
         QLabel * bloque = new QLabel(this->grafic);
         bloque->setGeometry(x,(this->grafic->height()/2)-50,tam*proporcion,50);
         bloque->setStyleSheet("background-color:rgb("+QString::number(r)+","+QString::number(g)+","+QString::number(b)+");");
@@ -219,7 +230,17 @@ void MainWindow::graficar()
         bloque->setAlignment(Qt::AlignCenter);
         bloque->show();
         this->processes_grafic.push_back(bloque);
+
         x+=tam*proporcion;
+
+        QLabel * time = new QLabel(this->grafic);
+        time->setGeometry((x-7),(this->grafic->height()/2)+2,15,10);
+        time->setStyleSheet("background-color:#FFFFFF");
+        time->setText(QString::number(this->results[i].second.second));
+        time->setAlignment(Qt::AlignCenter);
+        time->show();
+        this->times.push_back(time);
+
     }
     this->grafic_area->setWidget(this->grafic);
     this->grafic_area->setWidgetResizable(false);
@@ -237,5 +258,10 @@ void MainWindow::limpiar()
         this->processes_grafic[i]->setText("");
         this->processes_grafic[i]->show();
     }
+    for(unsigned i=0;i<this->times.size();i++){
+        this->times[i]->setText("");
+        this->times[i]->show();
+    }
     this->processes_grafic.clear();
+    this->times.clear();
 }

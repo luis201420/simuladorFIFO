@@ -35,7 +35,9 @@ private:
     QLabel       * grafic       ;
     QLabel       * line         ;
     QScrollArea  * grafic_area  ;
+
     vector<QLabel *> processes_grafic;
+    vector<QLabel *> times;
     vector< pair<QString,pair<int,int>> > processes;
     vector< pair<QString,pair<int,int>> > results  ;
 
