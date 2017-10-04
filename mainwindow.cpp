@@ -79,7 +79,7 @@ MainWindow::MainWindow(QRect screen)
     this->resultTable->setColumnCount(3);
     this->resultTable->resize(resultCounter->width(),resultCounter->height());
     QStringList tableHeader2;
-    tableHeader2<<"ID Proceso"<<"Tiempo espera"<<"Tiempo entrega";
+    tableHeader2<<"ID Proceso"<<"Tiempo final"<<"Tiempo retorno";
     this->resultTable->setHorizontalHeaderLabels(tableHeader2);
     this->resultTable->horizontalHeader()->setStretchLastSection(true);
 
@@ -154,7 +154,7 @@ void MainWindow::procesar()
     this->results.clear();
 
     int t_actual=0;
-    int t_espera,t_entrega;
+    int t_espera,t_entrega,t_nuevo;
 
     float n_espera=0,n_entrega=0;
 
@@ -162,13 +162,16 @@ void MainWindow::procesar()
         if(((t_actual)-((this->processes[i]).second).first)<=0){
             t_espera=0;
             t_actual+=abs(((t_actual)-((this->processes[i]).second).first));
+            t_nuevo = this->processes[i].second.second+t_actual+t_espera;
         }
         else{
             t_espera=((t_actual)-((this->processes[i]).second).first);
+            t_nuevo = this->processes[i].second.second+t_espera;
         }
         t_entrega=t_actual+(((this->processes[i]).second).second);
 
-        this->results.push_back(make_pair(((this->processes[i]).first),make_pair(t_espera,t_entrega)));
+        this->results.push_back(make_pair(((this->processes[i]).first),make_pair(t_nuevo,t_entrega)));
+
         n_espera+=t_espera;
         n_entrega+=t_entrega;
 
@@ -280,5 +283,5 @@ void MainWindow::limpiar()
 
 void MainWindow::mostrar_resultados_finales(float a,float b)
 {
-    this->finalresults->setText("Tiempo Espera Normalizado:\t"+QString::number(a)+"\nTiempo Entrega Normalizado:\t"+QString::number(b));
+    this->finalresults->setText("Tiempo Final Normalizado: \t"+QString::number(a)+"\nTiempo Retorno Normalizado:\t"+QString::number(b));
 }
