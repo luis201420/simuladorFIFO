@@ -211,7 +211,7 @@ void MainWindow::graficar()
         this->grafic->setGeometry(0,0,((((this->results[this->results.size()-1]).second).second)*proporcion)+20,(0.4*this->height));
     }
     else{
-        this->grafic->setGeometry(0,0,(0.90*this->width),(0.4*this->height));
+        this->grafic->setGeometry(0,0,(this->grafic_area->width()),(this->grafic_area->height()));
     }
 
     this->line->setGeometry(10,(this->grafic->height()/2),((((this->results[this->results.size()-1]).second).second)*proporcion)+15,2);
