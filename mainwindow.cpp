@@ -71,7 +71,7 @@ MainWindow::MainWindow(QRect screen)
     /** PANEL DE RESULTADOS **/
 
     this->resultCounter = new QWidget(this);
-    this->resultCounter->setGeometry((posTextX+(0.4*this->width)+100),posTextY,(0.4*this->width),(0.35*this->height));
+    this->resultCounter->setGeometry((posTextX+(0.4*this->width)+100),(posTextY+textHeight+30),(0.4*this->width),(0.35*this->height));
     this->resultCounter->setStyleSheet("background-color:#FFFFFF;");
 
     /** TABLE **/
@@ -84,6 +84,18 @@ MainWindow::MainWindow(QRect screen)
     this->resultTable->horizontalHeader()->setStretchLastSection(true);
 
     /** GRAFICA **/
+    this->grafic = new QLabel(this);
+    this->grafic->setGeometry(0,0,(0.90*this->width),(0.4*this->height));
+    this->grafic->setStyleSheet("background-color:#FFFFFF;");
+
+    this->grafic_area = new QScrollArea(this);
+    this->grafic_area->setGeometry((0.05*this->width),(posTextY+textHeight+85+this->counter->height()),(0.90*this->width),(0.4*this->height));
+    this->grafic_area->setWidget(this->grafic);
+    this->grafic_area->setWidgetResizable(false);
+
+    this->grafic_area->show();
+
+    this->line = new QLabel(this->grafic);
 }
 
 void MainWindow::iniciar()
@@ -103,6 +115,7 @@ void MainWindow::iniciar()
              this->processNumber=cont.toInt();
              this->llenar();
              this->procesar();
+             this->graficar();
          }
     }
     else{
@@ -115,7 +128,7 @@ void MainWindow::llenar()
 {
     this->counterTable->setRowCount(this->processNumber);
     this->processes.clear();
-    for(unsigned int i=1;i<=(this->processNumber);i++){
+    for(int i=1;i<=(this->processNumber);i++){
 
         QString id ="P"+QString::number(i);
         int t1=rand() % int(ceil((this->processNumber*2.0)/3.0)+1);
@@ -139,7 +152,7 @@ void MainWindow::procesar()
     int t_actual=0;
     int t_espera,t_entrega;
 
-    for(int i=0;i<this->processes.size();i++){
+    for(unsigned i=0;i<this->processes.size();i++){
         if(((t_actual)-((this->processes[i]).second).first)<=0){
             t_espera=0;
             t_actual+=abs(((t_actual)-((this->processes[i]).second).first));
@@ -171,4 +184,58 @@ void MainWindow::mostrar()
         this->resultTable->setItem(i, 1, new QTableWidgetItem(QString::number(t1)));
         this->resultTable->setItem(i, 2, new QTableWidgetItem(QString::number(t2)));
     }
+}
+
+void MainWindow::graficar()
+{
+    this->limpiar();
+
+    int proporcion = 15;
+
+    if(this->processNumber>=12){
+        this->grafic->setGeometry(0,0,((((this->results[this->results.size()-1]).second).second)*proporcion)+20,(0.4*this->height));
+    }
+    else{
+        this->grafic->setGeometry(0,0,(0.90*this->width),(0.4*this->height));
+    }
+
+    this->line->setGeometry(10,(this->grafic->height()/2),((((this->results[this->results.size()-1]).second).second)*proporcion)+15,2);
+    this->line->setStyleSheet("background-color:#000000;");
+    this->line->show();
+
+    int x = 15;
+    int tam;
+    int r,g,b;
+    for(unsigned i = 0 ; i < this->results.size();i++){
+        r=(rand() % 155) +100;
+        g=(rand() % 155) +100;
+        b=(rand() % 155) +100;
+
+        tam = this->processes[i].second.second;
+        QLabel * bloque = new QLabel(this->grafic);
+        bloque->setGeometry(x,(this->grafic->height()/2)-50,tam*proporcion,50);
+        bloque->setStyleSheet("background-color:rgb("+QString::number(r)+","+QString::number(g)+","+QString::number(b)+");");
+        bloque->setText(this->results[i].first);
+        bloque->setAlignment(Qt::AlignCenter);
+        bloque->show();
+        this->processes_grafic.push_back(bloque);
+        x+=tam*proporcion;
+    }
+    this->grafic_area->setWidget(this->grafic);
+    this->grafic_area->setWidgetResizable(false);
+
+    this->grafic_area->show();
+}
+
+void MainWindow::limpiar()
+{
+    this->line->setStyleSheet("background-color:#FFFFFF");
+    this->line->show();
+
+    for(unsigned i =0 ;i < this->processes_grafic.size();i++){
+        this->processes_grafic[i]->setStyleSheet("background-color:#FFFFFF");
+        this->processes_grafic[i]->setText("");
+        this->processes_grafic[i]->show();
+    }
+    this->processes_grafic.clear();
 }

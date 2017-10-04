@@ -8,6 +8,7 @@
 #include <QMessageBox>
 #include <QTableWidget>
 #include <QHeaderView>
+#include <QScrollArea>
 
 #include <algorithm>
 #include <vector>
@@ -27,10 +28,14 @@ private:
     QTextEdit    * text   ;
     StartButton  * button ;
 
-    QWidget      * counter;
+    QWidget      * counter      ;
     QWidget      * resultCounter;
     QTableWidget * counterTable ;
-    QTableWidget * resultTable ;
+    QTableWidget * resultTable  ;
+    QLabel       * grafic       ;
+    QLabel       * line         ;
+    QScrollArea  * grafic_area  ;
+    vector<QLabel *> processes_grafic;
     vector< pair<QString,pair<int,int>> > processes;
     vector< pair<QString,pair<int,int>> > results  ;
 
@@ -46,6 +51,8 @@ public:
     void llenar()  ;
     void procesar();
     void mostrar() ;
+    void graficar();
+    void limpiar() ;
 };
 
 #endif // MAINWINDOW_H
