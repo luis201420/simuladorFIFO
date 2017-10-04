@@ -79,7 +79,7 @@ MainWindow::MainWindow(QRect screen)
     this->resultTable->setColumnCount(3);
     this->resultTable->resize(resultCounter->width(),resultCounter->height());
     QStringList tableHeader2;
-    tableHeader2<<"ID Proceso"<<"Tiempo final"<<"Tiempo retorno";
+    tableHeader2<<"ID Proceso"<<"Tiempo Final"<<"Tiempo Retorno";
     this->resultTable->setHorizontalHeaderLabels(tableHeader2);
     this->resultTable->horizontalHeader()->setStretchLastSection(true);
 
@@ -185,6 +185,8 @@ void MainWindow::procesar()
     this->mostrar();
 }
 
+#include <QThread>
+
 void MainWindow::mostrar()
 {
     this->resultTable->setRowCount(this->processNumber);
@@ -192,8 +194,8 @@ void MainWindow::mostrar()
     for(unsigned int i=0;i<(this->results.size());i++){
 
         QString id =(this->results[i]).first;
-        int t1=((this->results[i]).second).first;
-        int t2=((this->results[i]).second).second;
+        int t1=((this->results[i]).second).second;
+        int t2=((this->results[i]).second).first;
 
         this->resultTable->setItem(i, 0, new QTableWidgetItem(id));
         this->resultTable->setItem(i, 1, new QTableWidgetItem(QString::number(t1)));
@@ -283,5 +285,5 @@ void MainWindow::limpiar()
 
 void MainWindow::mostrar_resultados_finales(float a,float b)
 {
-    this->finalresults->setText("Tiempo Final Normalizado: \t"+QString::number(a)+"\nTiempo Retorno Normalizado:\t"+QString::number(b));
+    this->finalresults->setText("Tiempo Retorno Normalizado: \t"+QString::number(a)+"\nTiempo Final Normalizado: \t"+QString::number(b));
 }
