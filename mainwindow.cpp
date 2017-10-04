@@ -96,6 +96,10 @@ MainWindow::MainWindow(QRect screen)
     this->grafic_area->show();
 
     this->line = new QLabel(this->grafic);
+
+    /** MOSTRADOR DE RESULTADOS FINALES DEL ALGORITMO **/
+    this->finalresults = new QLabel(this);
+    this->finalresults->setGeometry((posTextX+(0.4*this->width)+100),(posTextY-10),(0.4*this->width),50);
 }
 
 void MainWindow::iniciar()
@@ -152,6 +156,8 @@ void MainWindow::procesar()
     int t_actual=0;
     int t_espera,t_entrega;
 
+    float n_espera=0,n_entrega=0;
+
     for(unsigned i=0;i<this->processes.size();i++){
         if(((t_actual)-((this->processes[i]).second).first)<=0){
             t_espera=0;
@@ -163,9 +169,15 @@ void MainWindow::procesar()
         t_entrega=t_actual+(((this->processes[i]).second).second);
 
         this->results.push_back(make_pair(((this->processes[i]).first),make_pair(t_espera,t_entrega)));
+        n_espera+=t_espera;
+        n_entrega+=t_entrega;
 
         t_actual+=((this->processes[i]).second).second;
     }
+    n_espera/=this->processNumber;
+    n_entrega/=this->processNumber;
+
+    this->mostrar_resultados_finales(n_espera,n_entrega);
 
     this->mostrar();
 }
@@ -264,4 +276,9 @@ void MainWindow::limpiar()
     }
     this->processes_grafic.clear();
     this->times.clear();
+}
+
+void MainWindow::mostrar_resultados_finales(float a,float b)
+{
+    this->finalresults->setText("Tiempo Espera Normalizado:\t"+QString::number(a)+"\nTiempo Entrega Normalizado:\t"+QString::number(b));
 }

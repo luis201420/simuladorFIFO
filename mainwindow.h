@@ -34,6 +34,7 @@ private:
     QTableWidget * resultTable  ;
     QLabel       * grafic       ;
     QLabel       * line         ;
+    QLabel       * finalresults ;
     QScrollArea  * grafic_area  ;
 
     vector<QLabel *> processes_grafic;
@@ -55,6 +56,7 @@ public:
     void mostrar() ;
     void graficar();
     void limpiar() ;
+    void mostrar_resultados_finales(float,float);
 };
 
 #endif // MAINWINDOW_H
